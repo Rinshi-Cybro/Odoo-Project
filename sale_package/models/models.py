@@ -3,8 +3,9 @@ from odoo import models, fields, api
 
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
-    package_names = fields.Many2many('sale.package', 'package_name', string="Packages")
-    package_lines = fields.One2many('sale.package', 'package_id', string='package Lines')
+
+    package_names = fields.Many2many('sale.package', string="Packages")
+    # package_lines = fields.One2many('sale.package', 'package_id', string='package Lines')
 
 
 class SalePackage(models.Model):
