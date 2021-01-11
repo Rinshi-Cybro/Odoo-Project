@@ -5,7 +5,25 @@ class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
     package_names = fields.Many2many('sale.package', string="Packages")
-    # package_lines = fields.One2many('sale.package', 'package_id', string='package Lines')
+    package_lines = fields.One2many('sale.package', 'package_id', string='package Lines')
+
+    @api.onchange('package_names')
+    def _onchange_package_names(self):
+        # for rec in self:
+        lines = [(5, 0, 0)]
+        print("output", self.package_names)
+        for line in self.package_names:
+            print("line", line)
+            values = {'package_name': line.package_name,
+                      'width': line.width,
+                      'height': line.height,
+                      'length': line.length,
+                      'maximum_weight': line.maximum_weight}
+            print("values", values)
+            lines.append((0, 0, values))
+            print("lines", lines)
+        self.package_lines = lines
+        print("self.package_lines", self.package_lines)
 
 
 class SalePackage(models.Model):

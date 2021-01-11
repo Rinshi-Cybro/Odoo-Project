@@ -6,15 +6,23 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"></field>
         <field name="arch" type="xml">
-        <field name="payment_term_id" position="after">
-        <field name="package_names" widget="many2many_tags"
-               options="{'no_create_edit': True}"/>
-        </field>
-                <notebook position="inside">
-                       <page string="Package Info">
-
-                       </page>
-                  </notebook>
+            <field name="payment_term_id" position="after">
+                <field name="package_names" widget="many2many_tags"
+                       options="{'no_create_edit': True}"/>
+            </field>
+            <notebook position="inside">
+                <page string="Package Info">
+                    <field name="package_lines" editable="bottom">
+                        <tree>
+                            <field name="package_name"/>
+                            <field name="width"/>
+                            <field name="height"/>
+                            <field name="length"/>
+                            <field name="maximum_weight"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
         </field>
     </record>
 
