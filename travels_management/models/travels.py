@@ -8,11 +8,12 @@ class TravelsManagement(models.Model):
 
     booking_reference = fields.Char('Booking Reference', readonly=True, copy=False,
                                     required=True, default=lambda self: _('New'))
-    partner_id = fields.Many2one('res.partner', string="Customer", required=True)
+    customer_id = fields.Many2one('res.partner', string="Customer", required=True)
     no_of_passengers = fields.Integer(string="No Of Passengers", default=1, required=True)
-    service_id = fields.Many2one('travels.service.types', string='Service')
+    service = fields.Selection([('bus', 'Bus'), ('train', 'Train'), ('flight', 'Flight')], string='Service')
     booking_date = fields.Date(default=fields.Date.today())
-    source_location_id = fields.Many2one('travels.locations')
+    source_location = fields.Many2one('travels.locations', string='Source Location')
+    destination_location = fields.Many2one('travels.locations', string='Destination Location')
     travel_date = fields.Datetime()
     # expiration_date = fields.Date(compute='_compute_expiration_date', store=True)
     state = fields.Selection(selection=[('draft', 'Draft'),
@@ -20,3 +21,10 @@ class TravelsManagement(models.Model):
                                         ('expired', 'Expired')],
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
+
+
+class TravelsLocations(models.Model):
+    _name = 'travels.locations'
+    _description = 'Travels Locations'
+
+    locations_name = fields.Char(string="Locations")

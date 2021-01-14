@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--form view of the Sale Package model-->
-    <record id="booking_form" model="ir.ui.view">
+    <!--form view of the travels booking model-->
+    <record id="travels_booking_form" model="ir.ui.view">
         <field name="name">travels.booking.form</field>
         <field name="model">travels.booking</field>
         <field name="arch" type="xml">
             <form string="Bookings">
+                <header>
+                    <!--                    <button name="action_confirm" type="object" string="Confirm"-->
+                    class="oe_highlight" states="draft"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h2>
-                            <field name="package_name" readonly="1"/>
+                            <field name="booking_reference"/>
                         </h2>
                     </div>
                     <group>
                         <group>
-                            <field name="package_name" required="1"/>
-                            <field name="width"/>
-                            <field name="length"/>
+                            <field name="customer_id" required="1"
+                                   widget="res_partner_many2one"
+                                   context="{'res_partner_search_mod':'customer',
+                                    'show_address': 1, 'show_vat': True}"
+                                   options='{"always_reload": True}'/>
+                            <field name="no_of_passengers"/>
+                            <field name="service"/>
+                            <field name="booking_date"/>
                         </group>
                         <group>
-                            <field name="height"/>
-                            <field name="maximum_weight"/>
+                            <field name="source_location"/>
+                            <field name="destination_location"/>
+                            <field name="travel_date"/>
                         </group>
                     </group>
                 </sheet>
@@ -36,6 +47,16 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create a new Travels Bookings!!</p>
+        </field>
+    </record>
+
+    <record id="location_action" model="ir.actions.act_window">
+        <field name="name">Locations</field>
+        <field name="res_model">travels.locations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Locations!!</p>
         </field>
     </record>
 

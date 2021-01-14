@@ -4,7 +4,7 @@
 
     'summary': """Travels Management Software""",
 
-    'description': """Application Travels Management""",
+    'description': """Application For Travels Management""",
 
     'author': "My Company",
     'website': "http://www.yourcompany.com",
