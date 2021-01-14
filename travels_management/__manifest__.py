@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Sale Packages",
+    'name': "Travels Management",
 
-    'summary': """Manage sale packages""",
-               
-    'description': """Packages in Sale Module""",
+    'summary': """Travels Management Software""",
+
+    'description': """Application Travels Management""",
 
     'author': "My Company",
     'website': "http://www.yourcompany.com",
-    'category': 'Inventory/Inventory',
-    'sequence': '10',
+    'category': 'Uncategorized',
     'version': '14.0.2.1.2',
-    'depends': ['base', 'stock', 'sale'],
+
+    'depends': ['base'],
 
     'data': [
         'security/ir.model.access.csv',
-        'views/views.xml',
-
-
+        'views/travels.xml',
     ],
     'demo': [
 

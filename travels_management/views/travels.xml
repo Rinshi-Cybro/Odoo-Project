@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--form view of the Sale Package model-->
+    <record id="booking_form" model="ir.ui.view">
+        <field name="name">travels.booking.form</field>
+        <field name="model">travels.booking</field>
+        <field name="arch" type="xml">
+            <form string="Bookings">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="package_name" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="package_name" required="1"/>
+                            <field name="width"/>
+                            <field name="length"/>
+                        </group>
+                        <group>
+                            <field name="height"/>
+                            <field name="maximum_weight"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--Menu Items and Actions-->
+    <record id="booking_action" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">travels.booking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Travels Bookings!!</p>
+        </field>
+    </record>
+
+    <menuitem id="travels_management_root"
+              name="Travels Management"
+              sequence="10"/>
+
+    <menuitem id="travels_booking_root"
+              name="Booking"
+              parent="travels_management_root"
+              sequence="10"/>
+
+    <menuitem id="travels_booking"
+              name="Booking"
+              parent="travels_booking_root"
+              action="booking_action"
+              sequence="10"/>
+</odoo>
