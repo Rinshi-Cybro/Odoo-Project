@@ -4,10 +4,10 @@ from odoo import models, fields, api, _
 class TravelsManagement(models.Model):
     _name = 'travels.booking'
     _description = 'Travels Management Bookings'
-    _rec_name = 'booking_reference'
+    _rec_name = 'booking_seq'
 
-    booking_reference = fields.Char('Booking Reference', readonly=True, copy=False,
-                                    required=True, default=lambda self: _('New'))
+    booking_seq = fields.Char('Booking Reference', readonly=True, copy=False,
+                              required=True, default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', string="Customer", required=True)
     no_of_passengers = fields.Integer(string="No Of Passengers", default=1, required=True)
     service = fields.Selection([('bus', 'Bus'), ('train', 'Train'), ('flight', 'Flight')], string='Service')
@@ -22,9 +22,21 @@ class TravelsManagement(models.Model):
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
 
+    @api.model
+    def create(self, vals):
+        if vals.get('booking_seq', _('New')) == _('New'):
+            vals['booking_seq'] = self.env['ir.sequence'].next_by_code('travels.bookings.sequence') or _('New')
+            result = super(TravelsManagement, self).create(vals)
+            return result
+
+    def action_confirm(self):
+        for rec in self:
+            rec.state = 'confirmed'
+
 
 class TravelsLocations(models.Model):
     _name = 'travels.locations'
     _description = 'Travels Locations'
+    _rec_name = 'locations_name'
 
     locations_name = fields.Char(string="Locations")

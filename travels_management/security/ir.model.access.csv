@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_travels_booking,access.travels.booking,model_travels_booking,base.group_user,1,1,1,1
+access_travels_locations,access.travels.locations,model_travels_locations,base.group_user,1,1,1,1

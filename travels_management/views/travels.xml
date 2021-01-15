@@ -7,14 +7,14 @@
         <field name="arch" type="xml">
             <form string="Bookings">
                 <header>
-                    <!--                    <button name="action_confirm" type="object" string="Confirm"-->
+                    <button name="action_confirm" type="object" string="Confirm"
                     class="oe_highlight" states="draft"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h2>
-                            <field name="booking_reference"/>
+                            <field name="booking_seq"/>
                         </h2>
                     </div>
                     <group>
@@ -39,7 +39,7 @@
         </field>
     </record>
 
-    <!--Menu Items and Actions-->
+    <!--Bookings Menu Items and Actions-->
     <record id="booking_action" model="ir.actions.act_window">
         <field name="name">Bookings</field>
         <field name="res_model">travels.booking</field>
@@ -49,7 +49,7 @@
             <p class="o_view_nocontent_smiling_face">Create a new Travels Bookings!!</p>
         </field>
     </record>
-
+    <!--Locations Menu Items and Actions-->
     <record id="location_action" model="ir.actions.act_window">
         <field name="name">Locations</field>
         <field name="res_model">travels.locations</field>
@@ -67,6 +67,17 @@
     <menuitem id="travels_booking_root"
               name="Booking"
               parent="travels_management_root"
+              sequence="10"/>
+
+    <menuitem id="travels_configuration_root"
+              name="Configuration"
+              parent="travels_management_root"
+              sequence="12"/>
+
+    <menuitem id="travels_location"
+              name="Locations"
+              parent="travels_configuration_root"
+              action="location_action"
               sequence="10"/>
 
     <menuitem id="travels_booking"
