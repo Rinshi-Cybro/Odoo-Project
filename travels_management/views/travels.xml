@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <!--tree view of the travels booking model-->
+<!--    <record id="travels_booking_form" model="ir.ui.view">-->
+<!--        <field name="name">travels.booking.form</field>-->
+<!--        <field name="model">travels.booking</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--        </field>-->
+<!--    </record>-->
+
     <!--form view of the travels booking model-->
     <record id="travels_booking_form" model="ir.ui.view">
         <field name="name">travels.booking.form</field>
