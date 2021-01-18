@@ -2,12 +2,24 @@
 <odoo>
 
     <!--tree view of the travels booking model-->
-<!--    <record id="travels_booking_form" model="ir.ui.view">-->
-<!--        <field name="name">travels.booking.form</field>-->
-<!--        <field name="model">travels.booking</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--        </field>-->
-<!--    </record>-->
+    <record id="travels_booking_tree" model="ir.ui.view">
+        <field name="name">travels.booking.tree</field>
+        <field name="model">travels.booking</field>
+        <field name="arch" type="xml">
+            <tree default_order="travel_date">
+                <field name="booking_seq"/>
+                <field name="customer_id"/>
+                <field name="service"/>
+                <field name="booking_date"/>
+                <field name="travel_date"/>
+                <field name="source_location" optional="show"/>
+                <field name="destination_location" optional="show"/>
+                <field name="state" optional="show" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-info="state == 'draft'"/>
+            </tree>
+        </field>
+    </record>
 
     <!--form view of the travels booking model-->
     <record id="travels_booking_form" model="ir.ui.view">
@@ -17,7 +29,7 @@
             <form string="Bookings">
                 <header>
                     <button name="action_confirm" type="object" string="Confirm"
-                    class="oe_highlight" states="draft"/>
+                            class="oe_highlight" states="draft"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -48,6 +60,38 @@
         </field>
     </record>
 
+    <!--search view of the travels booking model-->
+    <record id="travels_booking_tree" model="ir.ui.view">
+        <field name="name">travels.booking.tree</field>
+        <field name="model">travels.booking</field>
+        <field name="arch" type="xml">
+            <search string="Search Bookings">
+                <field name="customer_id"
+                       filter_domain="[('customer_id', 'ilike', self)]"
+                       string="Customer"/>
+                <field name="booking_seq"
+                       filter_domain="[('booking_seq', 'ilike', self)]"
+                       string="Reference"/>
+
+                <filter string="Confirmed" name="confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Bus" name="bus"
+                        domain="[('service', '=', 'bus')]"/>
+                <filter string="Train" name="train"
+                        domain="[('service', '=', 'train')]"/>
+                <filter string="Flight" name="flight"
+                        domain="[('service', '=', 'flight')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Traveling Date" name="travel_date"
+                            context="{'group_by':'travel_date'}"/>
+                    <filter string="Destination Location"
+                            name="destination_location"
+                            context="{'group by':'destination_location'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!--Bookings Menu Items and Actions-->
     <record id="booking_action" model="ir.actions.act_window">
         <field name="name">Bookings</field>
@@ -58,6 +102,7 @@
             <p class="o_view_nocontent_smiling_face">Create a new Travels Bookings!!</p>
         </field>
     </record>
+
     <!--Locations Menu Items and Actions-->
     <record id="location_action" model="ir.actions.act_window">
         <field name="name">Locations</field>
