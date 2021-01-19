@@ -40,3 +40,15 @@ class TravelsLocations(models.Model):
     _rec_name = 'locations_name'
 
     locations_name = fields.Char(string="Locations")
+
+
+class ServiceTypes(models.Model):
+    _name = 'service.types'
+    _description = 'Service Types'
+    _rec_name = 'service_name'
+
+    service_name = fields.Char(string='Service Name')
+    expiration_period = fields.Integer(string='Expiration Period', help='Expiration period in days')
+
+
+

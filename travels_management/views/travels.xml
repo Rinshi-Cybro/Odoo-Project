@@ -61,8 +61,8 @@
     </record>
 
     <!--search view of the travels booking model-->
-    <record id="travels_booking_tree" model="ir.ui.view">
-        <field name="name">travels.booking.tree</field>
+    <record id="travels_booking_search" model="ir.ui.view">
+        <field name="name">travels.booking.search</field>
         <field name="model">travels.booking</field>
         <field name="arch" type="xml">
             <search string="Search Bookings">
@@ -81,12 +81,13 @@
                         domain="[('service', '=', 'train')]"/>
                 <filter string="Flight" name="flight"
                         domain="[('service', '=', 'flight')]"/>
+
                 <group expand="0" string="Group By">
                     <filter string="Traveling Date" name="travel_date"
                             context="{'group_by':'travel_date'}"/>
                     <filter string="Destination Location"
                             name="destination_location"
-                            context="{'group by':'destination_location'}"/>
+                            context="{'group_by':'destination_location'}"/>
                 </group>
             </search>
         </field>
