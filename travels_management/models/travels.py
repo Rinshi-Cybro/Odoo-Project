@@ -21,6 +21,7 @@ class TravelsManagement(models.Model):
                                         ('expired', 'Expired')],
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
+    service_type = fields.Many2one('service.types', string="Service Types")
 
     @api.model
     def create(self, vals):
@@ -48,6 +49,7 @@ class ServiceTypes(models.Model):
     _rec_name = 'service_name'
 
     service_name = fields.Char(string='Service Name')
+
     expiration_period = fields.Integer(string='Expiration Period', help='Expiration period in days')
 
 

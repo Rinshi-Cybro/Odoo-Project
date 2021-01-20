@@ -50,6 +50,7 @@
                             <field name="booking_date"/>
                         </group>
                         <group>
+                            <field name="service_type"/>
                             <field name="source_location"/>
                             <field name="destination_location"/>
                             <field name="travel_date"/>
@@ -59,6 +60,27 @@
             </form>
         </field>
     </record>
+
+    <!--form view of the Service Types model-->
+    <record id="service_types_form" model="ir.ui.view">
+        <field name="name">service.types.form</field>
+        <field name="model">service.types</field>
+        <field name="arch" type="xml">
+            <form string="Service Types">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="service_name"/>
+                        </group>
+                        <group>
+                            <field name="expiration_period"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 
     <!--search view of the travels booking model-->
     <record id="travels_booking_search" model="ir.ui.view">
@@ -115,6 +137,18 @@
         </field>
     </record>
 
+    <!--Service Menu Items and Actions-->
+    <record id="service_action" model="ir.actions.act_window">
+        <field name="name">Service Types</field>
+        <field name="res_model">service.types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Service Types!!</p>
+        </field>
+    </record>
+
+
     <menuitem id="travels_management_root"
               name="Travels Management"
               sequence="10"/>
@@ -123,6 +157,18 @@
               name="Booking"
               parent="travels_management_root"
               sequence="10"/>
+
+    <menuitem id="travels_configuration_root"
+              name="Configuration"
+              parent="travels_management_root"
+              sequence="12"/>
+
+    <menuitem id="service_types"
+              name="Service Types"
+              parent="travels_configuration_root"
+              action="service_action"
+              sequence="10"/>
+
 
     <menuitem id="travels_configuration_root"
               name="Configuration"
