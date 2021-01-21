@@ -47,13 +47,14 @@
                                    options='{"always_reload": True}'/>
                             <field name="no_of_passengers"/>
                             <field name="service"/>
+                            <field name="service_id"/>
                             <field name="booking_date"/>
                         </group>
                         <group>
-                            <field name="service_type"/>
                             <field name="source_location"/>
                             <field name="destination_location"/>
                             <field name="travel_date"/>
+                            <field name="expiration_date"/>
                         </group>
                     </group>
                 </sheet>

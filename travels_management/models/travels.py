@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 from odoo import models, fields, api, _
 
 
@@ -15,13 +17,19 @@ class TravelsManagement(models.Model):
     source_location = fields.Many2one('travels.locations', string='Source Location')
     destination_location = fields.Many2one('travels.locations', string='Destination Location')
     travel_date = fields.Datetime()
-    # expiration_date = fields.Date(compute='_compute_expiration_date', store=True)
+    expiration_date = fields.Date(compute='_compute_expiration_date', store=True)
     state = fields.Selection(selection=[('draft', 'Draft'),
                                         ('confirmed', 'Confirmed'),
                                         ('expired', 'Expired')],
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
-    service_type = fields.Many2one('service.types', string="Service Types")
+    service_id = fields.Many2one('service.types', string="Service Types")
+
+    @api.depends('booking_date', 'service_id.expiration_period')
+    def _compute_expiration_date(self):
+        for rec in self:
+            rec.expiration_date = datetime.strptime(str(rec.booking_date), '%Y-%m-%d') + relativedelta(
+                days=+ rec.service_id.expiration_period)
 
     @api.model
     def create(self, vals):
@@ -51,6 +59,3 @@ class ServiceTypes(models.Model):
     service_name = fields.Char(string='Service Name')
 
     expiration_period = fields.Integer(string='Expiration Period', help='Expiration period in days')
-
-
-
