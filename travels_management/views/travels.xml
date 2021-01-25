@@ -54,7 +54,7 @@
                             <field name="source_location"/>
                             <field name="destination_location"/>
                             <field name="travel_date"/>
-                            <field name="expiration_date"/>
+                            <field name="expiration_date" states="draft"/>
                         </group>
                     </group>
                 </sheet>

@@ -32,6 +32,13 @@ class TravelsManagement(models.Model):
                 days=+ rec.service_id.expiration_period)
 
     @api.model
+    def _check_expiry(self):
+        today = fields.Date.today()
+        for rec in self.env['travels.booking'].search([('state', '=', 'draft'),
+                                                       ('expiration_date', '<', today)]):
+            rec.state = 'expired'
+
+    @api.model
     def create(self, vals):
         if vals.get('booking_seq', _('New')) == _('New'):
             vals['booking_seq'] = self.env['ir.sequence'].next_by_code('travels.bookings.sequence') or _('New')

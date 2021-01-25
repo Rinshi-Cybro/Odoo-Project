@@ -16,6 +16,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/booking_expiry_cron.xml',
         'views/travels.xml',
     ],
     'demo': [
