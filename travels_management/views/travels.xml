@@ -104,6 +104,8 @@
                         domain="[('service', '=', 'train')]"/>
                 <filter string="Flight" name="flight"
                         domain="[('service', '=', 'flight')]"/>
+                <filter name="state" string="Active Bookings"
+                        domain="[('state','in',['draft','confirmed'])]"/>
 
                 <group expand="0" string="Group By">
                     <filter string="Traveling Date" name="travel_date"
@@ -122,6 +124,7 @@
         <field name="res_model">travels.booking</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{"search_default_state":1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create a new Travels Bookings!!</p>
         </field>

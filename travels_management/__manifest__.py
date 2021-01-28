@@ -11,11 +11,12 @@
     'category': 'Uncategorized',
     'version': '14.0.2.1.2',
 
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
 
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/service_type.xml',
         'data/booking_expiry_cron.xml',
         'views/travels.xml',
     ],
