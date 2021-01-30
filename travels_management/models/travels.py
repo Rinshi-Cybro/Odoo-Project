@@ -66,3 +66,26 @@ class ServiceTypes(models.Model):
     service_name = fields.Char(string='Service Name')
 
     expiration_period = fields.Integer(string='Expiration Period', help='Expiration period in days')
+
+
+class VehicleTypes(models.Model):
+    _name = 'vehicle.types'
+    _description = 'Travels Vehicles'
+    _sql_constraints = [('registration_no_unique', 'unique(registration_no)',
+                         'Registration Number must be unique')]
+    _rec_name = 'name'
+
+    name = fields.Char(store=True)
+    registration_no = fields.Char(string='Registration No')
+    vehicle_type = fields.Selection([('bus', 'Bus'), ('traveller', 'Traveller'), ('van', 'Van'), ('other', 'Other')],
+                                    string='Vehicle Types')
+    number_of_Seats = fields.Integer(string='Number of Seats', default=1, required=True)
+    facilities_ids = fields.Many2many(string='Facilities')
+
+    def name_get(self):
+        res = []
+        for rec in self:
+            rec.name = ('%s %s' % (rec.registration_no, (dict(rec.fields['vehicle_type'].selection)
+                                                         .get(rec.vehicle_type))))
+            res.append((rec.id, rec.name))
+            return res
