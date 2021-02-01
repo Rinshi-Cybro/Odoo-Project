@@ -70,22 +70,41 @@ class ServiceTypes(models.Model):
 
 class VehicleTypes(models.Model):
     _name = 'vehicle.types'
-    _description = 'Travels Vehicles'
+    _description = 'To add the Vehicle Details'
     _sql_constraints = [('registration_no_unique', 'unique(registration_no)',
                          'Registration Number must be unique')]
-    _rec_name = 'name'
 
-    name = fields.Char(store=True)
-    registration_no = fields.Char(string='Registration No')
-    vehicle_type = fields.Selection([('bus', 'Bus'), ('traveller', 'Traveller'), ('van', 'Van'), ('other', 'Other')],
-                                    string='Vehicle Types')
-    number_of_Seats = fields.Integer(string='Number of Seats', default=1, required=True)
-    facilities_ids = fields.Many2many(string='Facilities')
+    name = fields.Char(string='Name', compute='name_get', store=True)
+    registration_no = fields.Char(string='Registration No', copy=False, required=True)
+    vehicle_type = fields.Selection([('bus', 'Bus'), ('traveller', 'Traveller'),
+                                     ('van', 'Van'), ('other', 'Other')],
+                                    string='Vehicle Types', required=True)
+    number_of_Seats = fields.Integer(string='Number of Seats')
+    facilities_ids = fields.Many2many('travels.facilities')
 
     def name_get(self):
         res = []
         for rec in self:
-            rec.name = ('%s %s' % (rec.registration_no, (dict(rec.fields['vehicle_type'].selection)
+            rec.name = ('%s %s' % (rec.registration_no, (dict(rec._fields['vehicle_type'].selection)
                                                          .get(rec.vehicle_type))))
             res.append((rec.id, rec.name))
             return res
+
+
+class Facilities(models.Model):
+    _name = 'travels.facilities'
+    _description = 'Create Facilities'
+    _rec_name = 'facilities'
+
+    facilities = fields.Char(string='Facilities')
+
+
+class ChargeLines(models.Model):
+    _name = 'charge.lines'
+    _description = 'Charge Lines'
+
+    service = fields.Char(string="Service")
+    quantity = fields.Integer(string="Quantity", default='1')
+    unit = fields.Many2one('uom.uom', string="Unit")
+    amount = fields.Integer(string="Amount")
+    charge_id = fields.Many2one(string="Charge ID")

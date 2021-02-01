@@ -89,14 +89,22 @@
         <field name="arch" type="xml">
             <form string="Vehicle Types">
                 <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name" readonly="1"
+                                   class="oe_read_only"/>
+                        </h2>
+                    </div>
                     <group>
                         <group>
                             <field name="vehicle_type"/>
-                            <field name="registration_no"/>
+                            <field name="registration_no"
+                                   placeholder="Eg:- KL 10 AB 123"/>
                         </group>
                         <group>
                             <field name="number_of_Seats"/>
-                            <field name="facilities_ids"/>
+                            <field name="facilities_ids"
+                                   widget="many2many_tags"/>
                         </group>
                     </group>
                 </sheet>
@@ -185,6 +193,17 @@
         </field>
     </record>
 
+    <!--Facilities Menu Items and Actions-->
+    <record id="facilities_action" model="ir.actions.act_window">
+        <field name="name">Facilities</field>
+        <field name="res_model">travels.facilities</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Facilities!!</p>
+        </field>
+    </record>
+
 
     <!--Booking Menu Items-->
     <menuitem id="travels_management_root"
@@ -195,6 +214,19 @@
               name="Booking"
               parent="travels_management_root"
               sequence="10"/>
+
+    <!--Facilities Menu Items and Actions-->
+    <menuitem id="travels_configuration_root"
+              name="Configuration"
+              parent="travels_management_root"
+              sequence="12"/>
+
+    <menuitem id="travels_facilities"
+              name="Facilities"
+              parent="travels_configuration_root"
+              action="facilities_action"
+              sequence="10"/>
+
 
     <!--Vehicle Menu Items and Actions-->
     <menuitem id="travels_configuration_root"
