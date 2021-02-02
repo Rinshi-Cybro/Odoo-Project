@@ -81,6 +81,7 @@ class VehicleTypes(models.Model):
                                     string='Vehicle Types', required=True)
     number_of_Seats = fields.Integer(string='Number of Seats')
     facilities_ids = fields.Many2many('travels.facilities')
+    charge_line_ids = fields.One2many('charge.lines', 'charge_id', string="Vehicle Charges")
 
     def name_get(self):
         res = []
@@ -99,7 +100,7 @@ class Facilities(models.Model):
     facilities = fields.Char(string='Facilities')
 
 
-class ChargeLines(models.Model):
+class VehicleChargeLines(models.Model):
     _name = 'charge.lines'
     _description = 'Charge Lines'
 
@@ -107,4 +108,8 @@ class ChargeLines(models.Model):
     quantity = fields.Integer(string="Quantity", default='1')
     unit = fields.Many2one('uom.uom', string="Unit")
     amount = fields.Integer(string="Amount")
-    charge_id = fields.Many2one(string="Charge ID")
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda
+                                      self: self.env.user.company_id.currency_id.id,
+                                  required=True)
+    charge_id = fields.Many2one('vehicle.types', string="Charge ID")

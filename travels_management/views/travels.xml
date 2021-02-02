@@ -107,6 +107,23 @@
                                    widget="many2many_tags"/>
                         </group>
                     </group>
+                    <notebook position="inside">
+                        <page string="Vehicle Charges">
+                            <field name="charge_line_ids">
+                                <tree string="Vehicle Charges" editable="bottom">
+                                    <field name="service"/>
+                                    <field name="quantity"/>
+                                    <field name="unit"/>
+                                    <field name="amount" widget="monetary"
+                                           options="{'currency_field':'currency_id'}"/>
+                                    <field name="currency_id"
+                                           groups="base.group_multi_currency"
+                                           invisible="1"/>
+                                    <field name="charge_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -187,7 +204,7 @@
         <field name="name">Vehicle Types</field>
         <field name="res_model">vehicle.types</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">calendar,tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create a new Vehicle Types!!</p>
         </field>
