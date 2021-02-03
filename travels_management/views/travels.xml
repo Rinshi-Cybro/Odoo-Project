@@ -21,6 +21,21 @@
         </field>
     </record>
 
+    <!--calendar view of the Vehicle Types model-->
+    <record id="vehicle_types_view_calendar" model="ir.ui.view">
+        <field name="name">vehicle.types.view.calendar</field>
+        <field name="model">vehicle.types</field>
+        <field name="arch" type="xml">
+            <calendar string="Vehicle Type Calendar" date_start="date" color="name">
+                <field name="name"/>
+                <field name="vehicle_type"/>
+                <field name="registration_no"/>
+                <field name="number_of_Seats"/>
+            </calendar>
+        </field>
+    </record>
+
+
     <!--form view of the travels booking model-->
     <record id="travels_booking_form" model="ir.ui.view">
         <field name="name">travels.booking.form</field>
@@ -55,6 +70,47 @@
                             <field name="destination_location"/>
                             <field name="travel_date"/>
                             <field name="expiration_date" states="draft"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--form view of the tour packages model-->
+    <record id="tour_packages_form" model="ir.ui.view">
+        <field name="name">tour.packages.form</field>
+        <field name="model">tour.packages</field>
+        <field name="arch" type="xml">
+            <form string="Tour Packages">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            class="oe_highlight" states="draft"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name=""/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id" required="1"
+                                   widget="res_partner_many2one"
+                                   context="{'res_partner_search_mod':'customer',
+                                    'show_address': 1, 'show_vat': True}"
+                                   options='{"always_reload": True}'/>
+                            <field name="number_of_travellers"/>
+                            <field name="quotation_date"/>
+                            <field name="vehicle_type"/>
+                            <field name="facility_ids"/>
+                        </group>
+                        <group>
+                            <field name="source_location"/>
+                            <field name="destination_location"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
                         </group>
                     </group>
                 </sheet>
@@ -105,6 +161,7 @@
                             <field name="number_of_Seats"/>
                             <field name="facilities_ids"
                                    widget="many2many_tags"/>
+                            <field name="date" invisible="1"/>
                         </group>
                     </group>
                     <notebook position="inside">
@@ -165,7 +222,7 @@
         </field>
     </record>
 
-    <!--Bookings Menu Items and Actions-->
+    <!--Bookings Menu Actions-->
     <record id="booking_action" model="ir.actions.act_window">
         <field name="name">Bookings</field>
         <field name="res_model">travels.booking</field>
@@ -177,7 +234,7 @@
         </field>
     </record>
 
-    <!--Locations Menu Items and Actions-->
+    <!--Locations Menu Actions-->
     <record id="location_action" model="ir.actions.act_window">
         <field name="name">Locations</field>
         <field name="res_model">travels.locations</field>
@@ -188,7 +245,7 @@
         </field>
     </record>
 
-    <!--Service Menu Items and Actions-->
+    <!--Service Menu Actions-->
     <record id="service_action" model="ir.actions.act_window">
         <field name="name">Service Types</field>
         <field name="res_model">service.types</field>
@@ -199,18 +256,18 @@
         </field>
     </record>
 
-    <!--Vehicle Menu Items and Actions-->
+    <!--Vehicle Menu Actions-->
     <record id="vehicle_action" model="ir.actions.act_window">
         <field name="name">Vehicle Types</field>
         <field name="res_model">vehicle.types</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">calendar,tree,kanban,form</field>
+        <field name="view_mode">tree,calendar,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create a new Vehicle Types!!</p>
         </field>
     </record>
 
-    <!--Facilities Menu Items and Actions-->
+    <!--Facilities Menu Actions-->
     <record id="facilities_action" model="ir.actions.act_window">
         <field name="name">Facilities</field>
         <field name="res_model">travels.facilities</field>
@@ -218,6 +275,17 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Create a new Facilities!!</p>
+        </field>
+    </record>
+
+    <!--Tour Package Menu Actions-->
+    <record id="tour_packages_action" model="ir.actions.act_window">
+        <field name="name">Tour Packages</field>
+        <field name="res_model">tour.packages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Tour Packages!!</p>
         </field>
     </record>
 
@@ -231,6 +299,23 @@
               name="Booking"
               parent="travels_management_root"
               sequence="10"/>
+
+    <!--Tour Packages Menu Items and actions-->
+    <menuitem id="travels_management_root"
+              name="Travels Management"
+              sequence="10"/>
+
+    <menuitem id="tour_packages_root"
+              name="Tour Packages"
+              parent="travels_management_root"
+              sequence="10"/>
+
+    <menuitem id="tour_packages"
+              name="Tour Packages"
+              parent="tour_packages_root"
+              action="tour_packages_action"
+              sequence="10"/>
+
 
     <!--Facilities Menu Items and Actions-->
     <menuitem id="travels_configuration_root"

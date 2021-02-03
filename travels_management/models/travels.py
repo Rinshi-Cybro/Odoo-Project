@@ -27,12 +27,14 @@ class TravelsManagement(models.Model):
 
     @api.depends('booking_date', 'service_id.expiration_period')
     def _compute_expiration_date(self):
+        """Computing the expiration date"""
         for rec in self:
             rec.expiration_date = datetime.strptime(str(rec.booking_date), '%Y-%m-%d') + relativedelta(
                 days=+ rec.service_id.expiration_period)
 
     @api.model
     def _check_expiry(self):
+        """Checking for the expiry date and changing the state to expiry"""
         today = fields.Date.today()
         for rec in self.env['travels.booking'].search([('state', '=', 'draft'),
                                                        ('expiration_date', '<', today)]):
@@ -40,12 +42,14 @@ class TravelsManagement(models.Model):
 
     @api.model
     def create(self, vals):
+        """Creating booking sequence"""
         if vals.get('booking_seq', _('New')) == _('New'):
             vals['booking_seq'] = self.env['ir.sequence'].next_by_code('travels.bookings.sequence') or _('New')
             result = super(TravelsManagement, self).create(vals)
             return result
 
     def action_confirm(self):
+        """Changing the state to Confirmed"""
         for rec in self:
             rec.state = 'confirmed'
 
@@ -81,6 +85,7 @@ class VehicleTypes(models.Model):
                                     string='Vehicle Types', required=True)
     number_of_Seats = fields.Integer(string='Number of Seats')
     facilities_ids = fields.Many2many('travels.facilities')
+    date = fields.Date(string='Date')
     charge_line_ids = fields.One2many('charge.lines', 'charge_id', string="Vehicle Charges")
 
     def name_get(self):
@@ -113,3 +118,22 @@ class VehicleChargeLines(models.Model):
                                       self: self.env.user.company_id.currency_id.id,
                                   required=True)
     charge_id = fields.Many2one('vehicle.types', string="Charge ID")
+
+
+class TourPackages(models.Model):
+    _name = 'tour.packages'
+    _description = 'Tour Packages Details'
+
+    customer_id = fields.Many2one('res.partner', string='Customer', required=True)
+    quotation_date = fields.Date(string='Quotation Date')
+    source_location = fields.Many2one('travels.locations', string='Source Location')
+    destination_location = fields.Many2one('travels.locations', string='Destination Location')
+    start_date = fields.Date(string='Start Date')
+    end_date = fields.Date(string='End Date')
+    number_of_travellers = fields.Integer(string='Number Of Travellers')
+    facility_ids = fields.Many2many('travels.facilities', string='Facilities')
+    vehicle_type = fields.Selection([('bus', 'Bus'), ('traveller', 'Traveller'),
+                                     ('van', 'Van'), ('other', 'Other')],
+                                    string='Vehicle Types', required=True)
+    state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed')],
+                             string='Status', default='draft')
