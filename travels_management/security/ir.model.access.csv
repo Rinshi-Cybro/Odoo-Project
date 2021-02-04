@@ -5,3 +5,4 @@ access_service_types,access.service.types,model_service_types,base.group_user,1,
 access_vehicle_types,access.vehicle.types,model_vehicle_types,base.group_user,1,1,1,1
 access_travels_facilities,access.travels.facilities,model_travels_facilities,base.group_user,1,1,1,1
 access_charge_lines,access.charge.lines,model_charge_lines,base.group_user,1,1,1,1
+access_tour_packages,access.tour.packages,model_tour_packages,base.group_user,1,1,1,1

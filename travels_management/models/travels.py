@@ -123,7 +123,10 @@ class VehicleChargeLines(models.Model):
 class TourPackages(models.Model):
     _name = 'tour.packages'
     _description = 'Tour Packages Details'
+    _rec_name = 'package_seq'
 
+    package_seq = fields.Char('Tour Package Reference', readonly=True, copy=False,
+                              required=True, default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', string='Customer', required=True)
     quotation_date = fields.Date(string='Quotation Date')
     source_location = fields.Many2one('travels.locations', string='Source Location')
@@ -137,3 +140,26 @@ class TourPackages(models.Model):
                                     string='Vehicle Types', required=True)
     state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed')],
                              string='Status', default='draft')
+    vehicle_id = fields.Many2one('vehicle.types', string='Vehicle')
+
+    @api.model
+    def create(self, vals):
+        """Creating tour packages sequence"""
+        if vals.get('package_seq', _('New')) == _('New'):
+            vals['package_seq'] = self.env['ir.sequence'].next_by_code('tour.packages.sequence') or _('New')
+            result = super(TourPackages, self).create(vals)
+            return result
+
+    @api.onchange('vehicle_type', 'number_of_travellers', 'facility_ids')
+    def onchange_vehicle_id(self):
+        """Set vehicle_id list domain"""
+        for rec in self:
+            return {'domain': {
+                'vehicle_id': [('vehicle_type', '=', self.vehicle_type),
+                               ('number_of_travellers', '>=', self.number_of_travellers),
+                               ('facility_ids.id', 'in', self.facility_ids.ids)]}}
+
+    def action_confirm(self):
+        """Changing the state to Confirmed"""
+        for rec in self:
+            rec.state = 'confirmed'

@@ -11,5 +11,14 @@
             <field name="company_id" eval="False"/>
         </record>
 
+        <!-- Sequences for Tour Packages -->
+        <record id="seq_tour_packages" model="ir.sequence">
+            <field name="name">Tour Package Sequence</field>
+            <field name="code">tour.packages.sequence</field>
+            <field name="prefix">TP</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
     </data>
 </odoo>
