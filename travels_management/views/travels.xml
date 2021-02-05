@@ -116,6 +116,31 @@
                                    widget="many2one_tags"/>
                         </group>
                     </group>
+                    <notebook position="inside">
+                        <page string="Estimation">
+                            <group>
+                                <field name="estimated_km"/>
+                            </group>
+                            <field name="estimation_line_id">
+                                <tree string="Estimation" editable="bottom">
+                                    <field name="service"/>
+                                    <field name="quantity"/>
+                                    <field name="amount" widget="monetary"
+                                           options="{'currency_field':'currency_id'}"/>
+                                    <field name="sub_total"/>
+                                    <field name="currency_id"
+                                           groups="base.group_multi_currency"
+                                           invisible="1"/>
+                                    <field name="estimation_id" invisible="1"/>
+                                </tree>
+                            </field>
+<!--                            <group class="oe_subtotal_footer oe_right">-->
+<!--                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">-->
+<!--                                    <label for=""-->
+<!--                                </div>-->
+<!--                            </group>-->
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

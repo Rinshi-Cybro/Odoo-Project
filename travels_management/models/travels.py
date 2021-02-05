@@ -118,6 +118,8 @@ class VehicleChargeLines(models.Model):
                                       self: self.env.user.company_id.currency_id.id,
                                   required=True)
     charge_id = fields.Many2one('vehicle.types', string="Charge ID")
+    sub_total = fields.Float(compute='_compute_sub_total', string='Sub Total')
+    estimation_id = fields.Many2one('tour.packages', string="Estimation ID")
 
 
 class TourPackages(models.Model):
@@ -141,6 +143,8 @@ class TourPackages(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed')],
                              string='Status', default='draft')
     vehicle_id = fields.Many2one('vehicle.types', string='Vehicle')
+    estimated_km = fields.Float(string='Estimated KM')
+    estimation_line_id = fields.One2many('charge.lines', 'estimation_id', string='Estimation Lines')
 
     @api.model
     def create(self, vals):
@@ -154,10 +158,9 @@ class TourPackages(models.Model):
     def onchange_vehicle_id(self):
         """Set vehicle_id list domain"""
         for rec in self:
-            return {'domain': {
-                'vehicle_id': [('vehicle_type', '=', self.vehicle_type),
-                               ('number_of_travellers', '>=', self.number_of_travellers),
-                               ('facility_ids.id', 'in', self.facility_ids.ids)]}}
+            return {'domain': {'vehicle_id': [('vehicle_type', '=', self.vehicle_type),
+                                              ('number_of_Seats', '>=', self.number_of_travellers),
+                                              ('facilities_ids.id', 'in', self.facility_ids.ids)]}}
 
     def action_confirm(self):
         """Changing the state to Confirmed"""
