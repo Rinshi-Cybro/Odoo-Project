@@ -134,11 +134,14 @@
                                     <field name="estimation_id" invisible="1"/>
                                 </tree>
                             </field>
-<!--                            <group class="oe_subtotal_footer oe_right">-->
-<!--                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">-->
-<!--                                    <label for=""-->
-<!--                                </div>-->
-<!--                            </group>-->
+                            <group class="oe_subtotal_footer oe_right">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolable="1"
+                                       class="oe_subtotal_footer_separator"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

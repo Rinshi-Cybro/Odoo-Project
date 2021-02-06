@@ -121,6 +121,12 @@ class VehicleChargeLines(models.Model):
     sub_total = fields.Float(compute='_compute_sub_total', string='Sub Total')
     estimation_id = fields.Many2one('tour.packages', string="Estimation ID")
 
+    @api.depends('quantity', 'amount')
+    def _compute_sub_total(self):
+        """Computing the sub total"""
+        for rec in self:
+            rec.sub_total = rec.quantity * rec.amount
+
 
 class TourPackages(models.Model):
     _name = 'tour.packages'
@@ -145,6 +151,31 @@ class TourPackages(models.Model):
     vehicle_id = fields.Many2one('vehicle.types', string='Vehicle')
     estimated_km = fields.Float(string='Estimated KM')
     estimation_line_id = fields.One2many('charge.lines', 'estimation_id', string='Estimation Lines')
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda
+                                      self: self.env.user.company_id.currency_id.id,
+                                  required=True)
+    total_amount = fields.Monetary(compute='_compute_total', string='Total')
+
+    @api.onchange('vehicle_id')
+    def onchange_vehicle_charge(self):
+        """Add a vehicle charge line"""
+        lines = [(5, 0, 0)]
+        for line in self.vehicle_id.charge_line_ids:
+            val = {'service': line.service,
+                   'quantity': line.quantity,
+                   'amount': line.amount,
+                   'sub_total': line.sub_total}
+            lines.append((0, 0, val))
+            self.estimation_line_id = lines
+
+    @api.depends('estimation_line_id.sub_total')
+    def _compute_total(self):
+        """Computing the all total"""
+        for rec in self:
+            for line in self.estimation_line_id:
+                rec.total_amount += line.sub_total
+            return rec.total_amount
 
     @api.model
     def create(self, vals):
@@ -152,7 +183,7 @@ class TourPackages(models.Model):
         if vals.get('package_seq', _('New')) == _('New'):
             vals['package_seq'] = self.env['ir.sequence'].next_by_code('tour.packages.sequence') or _('New')
             result = super(TourPackages, self).create(vals)
-            return result
+        return result
 
     @api.onchange('vehicle_type', 'number_of_travellers', 'facility_ids')
     def onchange_vehicle_id(self):
