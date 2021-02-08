@@ -22,11 +22,12 @@
     </record>
 
     <!--calendar view of the Vehicle Types model-->
-    <record id="vehicle_types_view_calendar" model="ir.ui.view">
-        <field name="name">vehicle.types.view.calendar</field>
+    <record id="vehicle_types_calendar" model="ir.ui.view">
+        <field name="name">vehicle.types.calendar</field>
         <field name="model">vehicle.types</field>
         <field name="arch" type="xml">
-            <calendar string="Vehicle Type Calendar" date_start="date" color="name">
+            <calendar string="Vehicle Type Calendar" date_start="starting_date"
+                      date_stop="ending_date" color="name">
                 <field name="name"/>
                 <field name="vehicle_type"/>
                 <field name="registration_no"/>
@@ -72,6 +73,23 @@
                             <field name="expiration_date" states="draft"/>
                         </group>
                     </group>
+                    <notebook position="inside">
+                        <page string="Package Estimate">
+                            <field name="package_line_ids">
+                                <tree string="Package Estimate" editable="bottom">
+                                    <field name="service"/>
+                                    <field name="quantity"/>
+                                    <field name="amount" widget="monetary"
+                                           options="{'currency_field':'currency_id'}"/>
+                                    <field name="sub_total"/>
+                                    <field name="currency_id"
+                                           groups="base.group_multi_currency"
+                                           invisible="1"/>
+                                    <field name="package_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -193,6 +211,8 @@
                             <field name="facilities_ids"
                                    widget="many2many_tags"/>
                             <field name="date" invisible="1"/>
+                            <field name="starting_date" invisible="1"/>
+                            <field name="ending_date" invisible="1"/>
                         </group>
                     </group>
                     <notebook position="inside">

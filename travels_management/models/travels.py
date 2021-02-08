@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 from datetime import datetime
 from odoo import models, fields, api, _
 
@@ -24,6 +25,7 @@ class TravelsManagement(models.Model):
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
     service_id = fields.Many2one('service.types', string="Service Types")
+    package_line_ids = fields.One2many('charge.lines', 'package_id', string='Package Estimate Amount')
 
     @api.depends('booking_date', 'service_id.expiration_period')
     def _compute_expiration_date(self):
@@ -86,6 +88,8 @@ class VehicleTypes(models.Model):
     number_of_Seats = fields.Integer(string='Number of Seats')
     facilities_ids = fields.Many2many('travels.facilities')
     date = fields.Date(string='Date')
+    starting_date = fields.Date(string='Starting Date')
+    ending_date = fields.Date(string='Ending Date')
     charge_line_ids = fields.One2many('charge.lines', 'charge_id', string="Vehicle Charges")
 
     def name_get(self):
@@ -120,6 +124,7 @@ class VehicleChargeLines(models.Model):
     charge_id = fields.Many2one('vehicle.types', string="Charge ID")
     sub_total = fields.Float(compute='_compute_sub_total', string='Sub Total')
     estimation_id = fields.Many2one('tour.packages', string="Estimation ID")
+    package_id = fields.Many2one('travels.booking', string="Packages ID")
 
     @api.depends('quantity', 'amount')
     def _compute_sub_total(self):
@@ -168,6 +173,30 @@ class TourPackages(models.Model):
                    'sub_total': line.sub_total}
             lines.append((0, 0, val))
             self.estimation_line_id = lines
+
+    def action_confirm(self):
+        vehicles = self.search([('vehicle_id', '=', self.vehicle_id)])
+        self.vehicle_id.starting_date = self.start_date
+        self.vehicle_id.ending_date = self.end_date
+        for rec in vehicles:
+            if ((rec.start_date < self.start_date < rec.end_date) or
+                    (rec.start_date < self.end_date < rec.end_date) or
+                    (self.start_date < rec.start_date < self.end_date) or
+                    (self.start_date < rec.end_date < self.end_date)):
+                raise UserError('Choose Another Vehicle')
+        self.state = 'confirmed'
+
+        # field_vals = [(0, 0, {'service': line.service, 'quantity': line.quantity,
+        #                       'amount'})]
+        booking = self.env['travels.booking'].create({
+            'customer_id': self.customer_id.id,
+            'booking_date': self.quotation_date,
+            'no_of_passengers': self.number_of_travellers,
+            'travel_date': self.start_date,
+            'source_location': self.source_location.id,
+            'destination_location': self.destination_location.id
+        })
+        return booking
 
     @api.depends('estimation_line_id.sub_total')
     def _compute_total(self):
