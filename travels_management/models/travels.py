@@ -175,7 +175,9 @@ class TourPackages(models.Model):
             self.estimation_line_id = lines
 
     def action_confirm(self):
-        vehicles = self.search([('vehicle_id', '=', self.vehicle_id)])
+        vehicles = self.env['tour.packages'].search([(
+            'vehicle_id', '=', self.vehicle_id.id
+        )])
         self.vehicle_id.starting_date = self.start_date
         self.vehicle_id.ending_date = self.end_date
         for rec in vehicles:
@@ -183,20 +185,22 @@ class TourPackages(models.Model):
                     (rec.start_date < self.end_date < rec.end_date) or
                     (self.start_date < rec.start_date < self.end_date) or
                     (self.start_date < rec.end_date < self.end_date)):
-                raise UserError('Choose Another Vehicle')
+                raise UserError('Choose Another Vehicle!')
         self.state = 'confirmed'
-
-        # field_vals = [(0, 0, {'service': line.service, 'quantity': line.quantity,
-        #                       'amount'})]
+        values = [(0, 0, {'service': line.service, 'quantity': line.quantity,
+                          'amount': line.amount, 'sub_total': line.sub_total})
+                  for line in self.estimation_line_id]
         booking = self.env['travels.booking'].create({
             'customer_id': self.customer_id.id,
             'booking_date': self.quotation_date,
             'no_of_passengers': self.number_of_travellers,
             'travel_date': self.start_date,
             'source_location': self.source_location.id,
-            'destination_location': self.destination_location.id
+            'destination_location': self.destination_location.id,
+            'service_id': self.service_id.id,
+            'package_line_ids': values,
+            'vehicle_id': self.vehicle_id.id
         })
-        return booking
 
     @api.depends('estimation_line_id.sub_total')
     def _compute_total(self):
@@ -222,7 +226,7 @@ class TourPackages(models.Model):
                                               ('number_of_Seats', '>=', self.number_of_travellers),
                                               ('facilities_ids.id', 'in', self.facility_ids.ids)]}}
 
-    def action_confirm(self):
-        """Changing the state to Confirmed"""
-        for rec in self:
-            rec.state = 'confirmed'
+    # def action_confirm(self):
+    #     """Changing the state to Confirmed"""
+    #     for rec in self:
+    #         rec.state = 'confirmed'
