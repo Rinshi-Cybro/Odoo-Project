@@ -9,6 +9,14 @@ class TravelsManagement(models.Model):
     _description = 'Travels Management Bookings'
     _rec_name = 'booking_seq'
 
+    @api.depends('package_line_ids.sub_total')
+    def _compute_total(self):
+        """Computing the all total"""
+        for rec in self:
+            for line in self.package_line_ids:
+                rec.total_amount += line.sub_total
+            return rec.total_amount
+
     booking_seq = fields.Char('Booking Reference', readonly=True, copy=False,
                               required=True, default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', string="Customer", required=True)
@@ -18,12 +26,18 @@ class TravelsManagement(models.Model):
     source_location = fields.Many2one('travels.locations', string='Source Location')
     destination_location = fields.Many2one('travels.locations', string='Destination Location')
     travel_date = fields.Datetime()
+    fees = fields.Integer(string='Fees')
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda
+                                      self: self.env.user.company_id.currency_id.id,
+                                  required=True)
     expiration_date = fields.Date(compute='_compute_expiration_date', store=True)
     state = fields.Selection(selection=[('draft', 'Draft'),
                                         ('confirmed', 'Confirmed'),
                                         ('expired', 'Expired')],
                              string='Status', copy=False, track_visibility='onchange',
                              indux=True, default='draft')
+    total_amount = fields.Monetary(compute='_compute_total', string='Total')
     service_id = fields.Many2one('service.types', string="Service Types")
     package_line_ids = fields.One2many('charge.lines', 'package_id', string='Package Estimate Amount')
 
@@ -87,7 +101,7 @@ class VehicleTypes(models.Model):
                                     string='Vehicle Types', required=True)
     number_of_Seats = fields.Integer(string='Number of Seats')
     facilities_ids = fields.Many2many('travels.facilities')
-    date = fields.Date(string='Date')
+    # date = fields.Date(string='Date')
     starting_date = fields.Date(string='Starting Date')
     ending_date = fields.Date(string='Ending Date')
     charge_line_ids = fields.One2many('charge.lines', 'charge_id', string="Vehicle Charges")
@@ -161,6 +175,7 @@ class TourPackages(models.Model):
                                       self: self.env.user.company_id.currency_id.id,
                                   required=True)
     total_amount = fields.Monetary(compute='_compute_total', string='Total')
+    service_id = fields.Many2one('service.types', string="Service", default=1)
 
     @api.onchange('vehicle_id')
     def onchange_vehicle_charge(self):
@@ -187,9 +202,11 @@ class TourPackages(models.Model):
                     (self.start_date < rec.end_date < self.end_date)):
                 raise UserError('Choose Another Vehicle!')
         self.state = 'confirmed'
+
         values = [(0, 0, {'service': line.service, 'quantity': line.quantity,
                           'amount': line.amount, 'sub_total': line.sub_total})
                   for line in self.estimation_line_id]
+
         booking = self.env['travels.booking'].create({
             'customer_id': self.customer_id.id,
             'booking_date': self.quotation_date,
@@ -199,7 +216,7 @@ class TourPackages(models.Model):
             'destination_location': self.destination_location.id,
             'service_id': self.service_id.id,
             'package_line_ids': values,
-            'vehicle_id': self.vehicle_id.id
+            # 'vehicle_id': self.vehicle_id.id
         })
 
     @api.depends('estimation_line_id.sub_total')

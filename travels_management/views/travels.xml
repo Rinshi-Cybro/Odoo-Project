@@ -70,11 +70,14 @@
                             <field name="source_location"/>
                             <field name="destination_location"/>
                             <field name="travel_date"/>
+                            <field name="fees"
+                                   attrs="{'invisible':[('service_id','=', %(travels_management.tour_package)d)]}"/>
                             <field name="expiration_date" states="draft"/>
                         </group>
                     </group>
                     <notebook position="inside">
-                        <page string="Package Estimate">
+                        <page string="Package Estimate" name="package_estimate"
+                              attrs="{'invisible':[('service_id','!=', %(travels_management.tour_package)d)]}">
                             <field name="package_line_ids">
                                 <tree string="Package Estimate" editable="bottom">
                                     <field name="service"/>
@@ -85,9 +88,16 @@
                                     <field name="currency_id"
                                            groups="base.group_multi_currency"
                                            invisible="1"/>
-                                    <field name="package_id" invisible="1"/>
                                 </tree>
                             </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolable="1"
+                                       class="oe_subtotal_footer_separator"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -119,6 +129,7 @@
                                    context="{'res_partner_search_mod':'customer',
                                     'show_address': 1, 'show_vat': True}"
                                    options='{"always_reload": True}'/>
+                            <field name="service_id" invisible="1"/>
                             <field name="number_of_travellers"/>
                             <field name="quotation_date"/>
                             <field name="vehicle_type"/>
@@ -149,7 +160,7 @@
                                     <field name="currency_id"
                                            groups="base.group_multi_currency"
                                            invisible="1"/>
-                                    <field name="estimation_id" invisible="1"/>
+<!--                                    <field name="estimation_id" invisible="1"/>-->
                                 </tree>
                             </field>
                             <group class="oe_subtotal_footer oe_right">
@@ -210,7 +221,7 @@
                             <field name="number_of_Seats"/>
                             <field name="facilities_ids"
                                    widget="many2many_tags"/>
-                            <field name="date" invisible="1"/>
+                            <!--                            <field name="date" invisible="1"/>-->
                             <field name="starting_date" invisible="1"/>
                             <field name="ending_date" invisible="1"/>
                         </group>
