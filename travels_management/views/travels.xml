@@ -47,6 +47,8 @@
                     <button name="action_confirm" type="object" string="Confirm"
                             class="oe_highlight" states="draft"/>
                     <field name="state" widget="statusbar"/>
+                    <button name="create_invoice" string="Create Invoice" type="object"
+                            attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

@@ -17,6 +17,34 @@ class TravelsManagement(models.Model):
                 rec.total_amount += line.sub_total
             return rec.total_amount
 
+    def create_invoice(self):
+        """Create booking Invoice"""
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_date': self.booking_date,
+            'partner_id': self.customer_id.id,
+            'invoice_date_due': self.travel_date,
+            'l10n_in_gst_treatment': 'consumer',
+            'journal_id': 1,
+            'invoice_line_ids': []
+        })
+        if self.service_id.id == 1:
+            invoice['invoice_line_ids'] = [(0, 0, {'name': line.service,
+                                                   'quantity': line.quantity,
+                                                   'price_unit': line.amount})
+                                           for line in self.package_line_ids]
+        else:
+            invoice['invoice_line_ids'] = [(0, 0, {'name': self.booking_seq +
+                                                           self.service_id.service_name,
+                                                   'price_unit': self.fees})]
+            return {
+                'name': 'Customer Invoice',
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'account.move',
+                'res_id': invoice.id,
+            }
+
     booking_seq = fields.Char('Booking Reference', readonly=True, copy=False,
                               required=True, default=lambda self: _('New'))
     customer_id = fields.Many2one('res.partner', string="Customer", required=True)
