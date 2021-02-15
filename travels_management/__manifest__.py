@@ -14,6 +14,7 @@
     'depends': ['base', 'mail', 'uom'],
 
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'data/service_type.xml',

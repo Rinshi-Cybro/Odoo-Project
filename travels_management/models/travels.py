@@ -37,13 +37,13 @@ class TravelsManagement(models.Model):
             invoice['invoice_line_ids'] = [(0, 0, {'name': self.booking_seq +
                                                            self.service_id.service_name,
                                                    'price_unit': self.fees})]
-            return {
-                'name': 'Customer Invoice',
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'account.move',
-                'res_id': invoice.id,
-            }
+        return {
+            'name': 'Customer Invoice',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'account.move',
+            'res_id': invoice.id,
+        }
 
     booking_seq = fields.Char('Booking Reference', readonly=True, copy=False,
                               required=True, default=lambda self: _('New'))

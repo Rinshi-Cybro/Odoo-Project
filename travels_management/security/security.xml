@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="module_category_booking" model="ir.module.category">
+        <field name="name">Travels Booking</field>
+    </record>
+
+    <record id="booking_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_booking"/>
+    </record>
+
+    <record id="booking_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_booking"/>
+        <field name="implied_ids" eval="[(4, ref('booking_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>
