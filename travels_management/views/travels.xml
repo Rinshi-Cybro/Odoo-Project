@@ -162,7 +162,7 @@
                                     <field name="currency_id"
                                            groups="base.group_multi_currency"
                                            invisible="1"/>
-<!--                                    <field name="estimation_id" invisible="1"/>-->
+                                    <!--                                    <field name="estimation_id" invisible="1"/>-->
                                 </tree>
                             </field>
                             <group class="oe_subtotal_footer oe_right">
@@ -362,6 +362,22 @@
     <menuitem id="travels_booking_root"
               name="Booking"
               parent="travels_management_root"
+              sequence="10"/>
+
+    <!--Travel Report Menu Items and actions-->
+    <menuitem id="travels_management_root"
+              name="Travels Management"
+              sequence="10"/>
+
+    <menuitem id="report_root"
+              name="Report"
+              parent="travels_management_root"
+              sequence="10"/>
+
+    <menuitem id="report_root"
+              name="Report"
+              parent="report_root"
+              action="travels_management_report_wizard"
               sequence="10"/>
 
     <!--Tour Packages Menu Items and actions-->

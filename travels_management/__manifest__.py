@@ -16,6 +16,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'wizards/create_report.xml',
         'data/sequence.xml',
         'data/service_type.xml',
         'data/booking_expiry_cron.xml',

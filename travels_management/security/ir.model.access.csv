@@ -14,3 +14,4 @@ access_vehicle_types,access.vehicle.types,model_vehicle_types,booking_manager,1,
 access_travels_facilities,access.travels.facilities,model_travels_facilities,booking_manager,1,1,1,1
 access_charge_lines,access.charge.lines,model_charge_lines,booking_manager,1,1,1,1
 access_tour_packages,access.tour.packages,model_tour_packages,booking_manager,1,1,1,1
+access_travels_report_wizard,access.travels.report.wizard,model_travels_report_wizard,booking_manager,1,1,1,1
