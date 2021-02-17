@@ -28,6 +28,7 @@ class TravelsReport(models.TransientModel):
     customer_id = fields.Many2one('res.partner', string='Customer Name')
 
     def print_pdf(self):
+        print("lllooo")
         data = {
             'model_id': self.id,
             'date_from': self.date_from,
@@ -36,4 +37,4 @@ class TravelsReport(models.TransientModel):
             'customer_name': self.customer_id.name,
         }
 
-        # return self.env.ref().
+        return self.env.ref('travels_management.print_report_pdf').report_action(self, data=data)
