@@ -5,11 +5,11 @@
         <field name="name">Travels Report Wizard Form</field>
         <field name="model">travels.report.wizard</field>
         <field name="arch" type="xml">
-            <form string="Travels Management">
+            <form string="Travels Management Report">
                 <group>
+                    <field name="customer"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
-                    <field name="customer_id"/>
                 </group>
                 <footer>
                     <button name="print_pdf" string="Print PDF"

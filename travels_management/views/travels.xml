@@ -75,6 +75,7 @@
                             <field name="fees"
                                    attrs="{'invisible':[('service_id','=', %(travels_management.tour_package)d)]}"/>
                             <field name="expiration_date" states="draft"/>
+                            <field name="vehicle_id" invisible="1"/>
                         </group>
                     </group>
                     <notebook position="inside">

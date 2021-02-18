@@ -68,6 +68,7 @@ class TravelsManagement(models.Model):
     total_amount = fields.Monetary(compute='_compute_total', string='Total')
     service_id = fields.Many2one('service.types', string="Service Types")
     package_line_ids = fields.One2many('charge.lines', 'package_id', string='Package Estimate Amount')
+    vehicle_id = fields.Many2one('vehicle.types', string='Vehicle')
 
     @api.depends('booking_date', 'service_id.expiration_period')
     def _compute_expiration_date(self):
@@ -244,7 +245,7 @@ class TourPackages(models.Model):
             'destination_location': self.destination_location.id,
             'service_id': self.service_id.id,
             'package_line_ids': values,
-            # 'vehicle_id': self.vehicle_id.id
+            'vehicle_id': self.vehicle_id.id
         })
 
     @api.depends('estimation_line_id.sub_total')

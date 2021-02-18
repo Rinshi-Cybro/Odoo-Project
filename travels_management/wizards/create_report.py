@@ -25,7 +25,7 @@ class TravelsReport(models.TransientModel):
 
     date_from = fields.Date(string='From Date')
     date_to = fields.Date(string='To Date')
-    customer_id = fields.Many2one('res.partner', string='Customer Name')
+    customer = fields.Many2one('res.partner', string='Customer Name')
 
     def print_pdf(self):
         print("lllooo")
@@ -33,8 +33,7 @@ class TravelsReport(models.TransientModel):
             'model_id': self.id,
             'date_from': self.date_from,
             'date_to': self.date_to,
-            'customer_id': self.customer_id.id,
-            'customer_name': self.customer_id.name,
+            'customer': self.customer.name,
         }
 
         return self.env.ref('travels_management.print_report_pdf').report_action(self, data=data)
