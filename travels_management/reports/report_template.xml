@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <template id="print_travels_report">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <h1 align="center">Travels Booking Report</h1>
+                    <br>
+
+                    </br>
+                    <div class="page">
+                        <strong>
+                            <center>
+                                <span t-esc="customer"/>
+                            </center>
+                        </strong>
+                        <br>
+
+                        </br>
+                        <br>
+
+                        </br>
+                        <div class="row mt8 mb8">
+                            <div class="col-1"/>
+                            <strong>Date From:</strong>
+                            <t t-esc="date_from"
+                               t-options='{"widget": "date"}'/>
+
+                            <div class="col-1"/>
+                            <div class="col-1" style="margin-right: 250px;"/>
+                            <strong>Date To:</strong>
+                            <t t-esc="date_to" t-options='{"widget": "date"}'/>
+                        </div>
+                        <br>
+
+                        </br>
+                        <br>
+
+                        </br>
+                        <table class="table table-bordered">
+
+                            <tr>
+                                <th style="text-align:left:">
+                                    <span>SL No</span>
+                                </th>
+                                <th style="text-align:left:">
+                                    <span>Source Location</span>
+                                </th>
+                                <th style="text-align:left:">
+                                    <span>Destination Location</span>
+                                </th>
+                                <th style="text-align:left:">
+                                    <span>Vehicle Name</span>
+                                </th>
+                                <th style="text-align:left:">
+                                    <span>State</span>
+                                </th>
+                            </tr>
+                            <t t-foreach="docs" t-as="doc">
+                                <tr>
+                                    <td>
+                                        <t t-esc="doc_index+1"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc['source_location']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc['destination_location']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc['vehicle']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc['state']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
