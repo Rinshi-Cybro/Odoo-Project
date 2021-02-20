@@ -17,6 +17,8 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'wizards/create_report.xml',
+        'reports/report.xml',
+        'reports/report_template.xml',
         'data/sequence.xml',
         'data/service_type.xml',
         'data/booking_expiry_cron.xml',
