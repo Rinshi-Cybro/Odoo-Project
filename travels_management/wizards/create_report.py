@@ -49,7 +49,7 @@ class TravelsReport(models.TransientModel):
             'type': 'ir.actions.report',
             'data': {
                 'model': 'travels.report.wizard',
-                'options': json.dump(data, default=date_utils.json_default),
+                'options': json.dumps(data, default=date_utils.json_default),
                 'output_format': 'xlsx',
                 'report_name': 'Booking xlsx report'
             },
@@ -65,7 +65,7 @@ class TravelsReport(models.TransientModel):
         today = fields.Date.today()
 
         output = io.BytesIO()
-        workbook = xlsxwriter.workbook(output, {'in_memory': True})
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet()
         cell_format = workbook.add_format({'font_size': '12px'})
         cell2_format = workbook.add_format({'align': 'left', 'font_size': '14px'})

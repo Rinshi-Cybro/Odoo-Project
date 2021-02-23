@@ -13,7 +13,7 @@ class TravelsManagement(models.Model):
     def _compute_total(self):
         """Computing the all total"""
         for rec in self:
-            for line in self.package_line_ids:
+            for line in rec.package_line_ids:
                 rec.total_amount += line.sub_total
             return rec.total_amount
 
@@ -64,7 +64,7 @@ class TravelsManagement(models.Model):
                                         ('confirmed', 'Confirmed'),
                                         ('expired', 'Expired')],
                              string='Status', copy=False, track_visibility='onchange',
-                             indux=True, default='draft')
+                             index=True, default='draft')
     total_amount = fields.Monetary(compute='_compute_total', string='Total')
     service_id = fields.Many2one('service.types', string="Service Types")
     package_line_ids = fields.One2many('charge.lines', 'package_id', string='Package Estimate Amount')

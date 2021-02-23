@@ -36,9 +36,9 @@ class XLSXReportController(http.Controller):
 
                 report_obj.get_xlsx_report(options, response)
 
-            response.set_cookie('fileToken', token)
+                response.set_cookie('fileToken', token)
 
-            return response
+                return response
 
         except Exception as e:
 
@@ -54,4 +54,4 @@ class XLSXReportController(http.Controller):
 
             }
 
-            return request.make_response(html_escape(json.dump(error)))
+            return request.make_response(html_escape(json.dumps(error)))

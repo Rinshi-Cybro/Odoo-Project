@@ -22,6 +22,7 @@
         'data/sequence.xml',
         'data/service_type.xml',
         'data/booking_expiry_cron.xml',
+        'views/action_manager.xml',
         'views/travels.xml',
     ],
     'demo': [

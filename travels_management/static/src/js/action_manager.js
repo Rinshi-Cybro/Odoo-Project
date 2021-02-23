@@ -22,7 +22,7 @@ ActionManager.include({
             error: (error) => this.call('crash_manager', 'rpc_error', error),
             complete: framework.unblockUI,
         });
-        return def:
+        return def;
     },
 
     _executeReportAction: function (action, options) {
