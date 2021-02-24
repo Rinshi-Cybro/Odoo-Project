@@ -58,6 +58,12 @@ class TravelsReportPrint(models.AbstractModel):
                                 BETWEEN CAST('%s' AS DATE) AND CAST('%s' AS DATE) AND
                                 state NOT IN ('draft')""" % (date_from, today)
 
+        elif not customer and not date_from and date_to:
+
+            query = query_start + """ WHERE CAST(booking.booking_date AS DATE)
+                                 <= CAST('%s' AS DATE) AND state NOT IN
+                                 ('draft')""" % date_to
+
         elif customer:
             query = query_start + """ WHERE customer.name = ('%s') AND state
                                      NOT IN ('draft')""" % customer

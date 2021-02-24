@@ -9,7 +9,7 @@
             <tree default_order="travel_date">
                 <field name="booking_seq"/>
                 <field name="customer_id"/>
-                <field name="service"/>
+                <field name="service" invisible="1"/>
                 <field name="booking_date"/>
                 <field name="travel_date"/>
                 <field name="source_location" optional="show"/>
@@ -64,7 +64,7 @@
                                     'show_address': 1, 'show_vat': True}"
                                    options='{"always_reload": True}'/>
                             <field name="no_of_passengers"/>
-                            <field name="service"/>
+                            <field name="service" invisible="1"/>
                             <field name="service_id"/>
                             <field name="booking_date"/>
                         </group>

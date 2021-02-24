@@ -73,24 +73,24 @@ class TravelsReport(models.TransientModel):
         heading = workbook.add_format({'align': 'center', 'bold': True,
                                        'font_size': '11px'})
         txt = workbook.add_format({'font_size': '10px'})
-        subhead = workbook.add_format({'align': 'left', 'bold': True,
+        subhead = workbook.add_format({'align': 'center', 'bold': True,
                                        'font_size': '11px'})
         date = workbook.add_format({'num_format': 'dd/mm/yyyy',
                                     'font_size': '10px', 'align': 'left'})
 
-        sheet.merge_range('F4:S5', 'Booking Report', head)
+        sheet.merge_range('F4:S5', 'Travels Booking Report', head)
 
         if customer:
             sheet.merge_range('L7:M7', customer, heading)
         if date_from:
-            sheet.write('G8', 'From Date', txt)
+            sheet.write('G8', 'From Date:', txt)
             sheet.write('H8', data['date_from'], date)
         if date_to:
-            sheet.write('P8', 'To Date', txt)
+            sheet.write('P8', 'To Date:', txt)
             sheet.write('Q8', data['date_to'], date)
 
         sheet.write('F10', 'SL No', subhead)
-        sheet.merge_range('G10:H10', 'Source Location', subhead)
+        sheet.merge_range('G10:I10', 'Source Location', subhead)
         sheet.merge_range('J10:L10', 'Destination Location', subhead)
         sheet.merge_range('N10:P10', 'Vehicle Name', subhead)
         sheet.merge_range('R10:S10', 'State', subhead)

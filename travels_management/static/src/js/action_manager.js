@@ -12,7 +12,7 @@ var session = require('web.session');
 ActionManager.include({
 
 
-    _executexlsxReportDownloadAction: function (actions) {
+    _executexlsxReportDownloadAction: function (action) {
         framework.blockUI();
         var def = $.Deferred();
         session.get_file({
